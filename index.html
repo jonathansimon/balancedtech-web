@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Balanced Technology</title>
+<meta name="description" content="Balanced Technology">
+<link rel="icon" href="logo.png">
+<style>
+  :root { --espresso:#2B201A; --cognac:#9A4B2E; --cream:#F5EEE4; --rule:#D9C9B6; --muted:#7A6859; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--cream);
+    color: var(--espresso);
+    font-family: "Courier New", Courier, monospace;
+    display: grid;
+    place-items: center;
+    border-top: 6px solid var(--cognac);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  #chart { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+  main { position: relative; z-index: 1; text-align: center; padding: 2rem 1.5rem; }
+  img { width: clamp(150px, 22vw, 220px); height: auto; display: block; margin: 0 auto 2.25rem; }
+  h1 { font-size: clamp(1.9rem, 4.6vw, 3rem); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+  .rule { margin: 1.5rem auto 1.25rem; width: 3.5rem; border: 0; border-top: 1px solid var(--rule); }
+  a {
+    color: var(--cognac); font-weight: 700; font-size: clamp(.95rem, 1.8vw, 1.1rem); letter-spacing: .04em;
+    text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 2px; transition: border-color .15s;
+  }
+  a:hover, a:focus-visible { border-bottom-color: var(--cognac); outline: none; }
+
+  /* chart styling */
+  #chart .ink   { stroke: var(--espresso); fill: none; stroke-linecap: round; }
+  #chart .cog   { stroke: var(--cognac);   fill: none; stroke-linecap: round; }
+  #chart text   { font: italic 700 10px "Courier New", Courier, monospace; fill: var(--muted); letter-spacing: .08em; }
+  #chart text.cog-t { fill: var(--cognac); font-style: normal; font-size: 10.5px; }
+
+</style>
+</head>
+<body>
+  <svg id="chart" aria-hidden="true"></svg>
+  <main>
+    <img id="logo" src="logo.png" alt="Balanced Technology compass logo" width="220" height="220">
+    <h1>Balanced Technology</h1>
+    <hr class="rule">
+    <a href="mailto:jonathan@balancedtech.co">jonathan@balancedtech.co</a>
+  </main>
+
+<script>
+(function () {
+  const svg = document.getElementById('chart');
+  const logo = document.getElementById('logo');
+  const main = document.querySelector('main');
+  const NS = 'http://www.w3.org/2000/svg';
+  const el = (name, attrs, parent) => {
+    const n = document.createElementNS(NS, name);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    (parent || svg).appendChild(n);
+    return n;
+  };
+  const P = (x, y) => x.toFixed(1) + ' ' + y.toFixed(1);
+  const rng = (a) => () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+
+  // an abstract landmass: soft coast with two nested depth contours
+  function landmass(cx, cy, R0, rand) {
+    const ph = [1, 2, 3, 4].map(() => rand() * 6.283);
+    const f = (a) => 1 + .2*Math.cos(2*a+ph[0]) + .12*Math.cos(3*a+ph[1]) + .06*Math.cos(5*a+ph[2]) + .03*Math.cos(8*a+ph[3]);
+    const r = (a, m) => R0 * m * (1 + (f(a) - 1) / Math.pow(m, 1.25));
+    const path = (m) => { let d = ''; for (let i = 0; i <= 120; i++) { const a = i / 120 * 6.2832;
+      d += (i ? 'L' : 'M') + P(cx + r(a, m) * Math.cos(a), cy + r(a, m) * Math.sin(a)); } return d + 'Z'; };
+    path.rho = (x, y) => Math.hypot(x - cx, y - cy) / r(Math.atan2(y - cy, x - cx), 1);
+    return path;
+  }
+
+  function build() {
+    const W = window.innerWidth, H = window.innerHeight, m = Math.min(W, H);
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svg.innerHTML = '';
+    const rand = rng(23);
+
+    const defs = el('defs', {});
+    const f = el('filter', { id: 'rough', filterUnits: 'userSpaceOnUse', x: 0, y: 0, width: W, height: H }, defs);
+    el('feTurbulence', { type: 'fractalNoise', baseFrequency: '0.02', numOctaves: '2', seed: '4', result: 'n' }, f);
+    el('feDisplacementMap', { in: 'SourceGraphic', in2: 'n', scale: '1.3' }, f);
+    const cp = el('clipPath', { id: 'neat' }, defs);
+    el('rect', { x: 24, y: 30, width: W - 48, height: H - 54 }, cp);
+
+
+    // where the content sits, and where the course can go (away from it)
+    const mr = main.getBoundingClientRect(), pad = 26;
+    const box = { x0: mr.left - pad, y0: mr.top - pad, x1: mr.right + pad, y1: mr.bottom + pad };
+    const regions = {
+      left:   { x0: 40,         y0: 50,         x1: box.x0 - 18, y1: H - 40 },
+      right:  { x0: box.x1 + 18, y0: 50,         x1: W - 40,      y1: H - 40 },
+      top:    { x0: 40,         y0: 46,         x1: W - 40,      y1: box.y0 - 10 },
+      bottom: { x0: 40,         y0: box.y1 + 10, x1: W - 40,      y1: H - 40 },
+    };
+    let side = null, best = 0;
+    for (const k of ['left', 'right', 'top', 'bottom']) {
+      const g = regions[k], w = g.x1 - g.x0, h = g.y1 - g.y0;
+      if (w < 120 || h < 110) continue;
+      if (w * h > best) { best = w * h; side = k; }
+    }
+    side = side || 'top';
+    const Rg = regions[side], rw = Rg.x1 - Rg.x0, rh = Rg.y1 - Rg.y0;
+
+    // ---- faint chart: a couple of quiet landmasses opposite the course ----
+    const clipG = el('g', { 'clip-path': 'url(#neat)' });
+    const chart = el('g', { opacity: '0.14' }, clipG);
+    const art = el('g', { filter: 'url(#rough)' }, chart);
+    const spots = {
+      left:   [[W * 1.0, H * 0.22, m * 0.26], [W * 0.98, H * 0.92, m * 0.15]],
+      right:  [[0,       H * 0.25, m * 0.26], [W * 0.02, H * 0.92, m * 0.15]],
+      top:    [[W * 0.12, H * 1.0, m * 0.34], [W * 0.95, H * 0.97, m * 0.24]],
+      bottom: [[W * 0.1,  0,       m * 0.34], [W * 0.95, H * 0.02, m * 0.24]],
+    }[side];
+    const paths = [];
+    spots.forEach(([cx, cy, R0]) => {
+      const path = landmass(cx, cy, R0, rand); paths.push(path);
+      el('path', { d: path(1.75), fill: '#F0E6D5', stroke: '#2B201A', 'stroke-width': 0.7, opacity: 0.8 }, art);
+      el('path', { d: path(1.32), fill: '#EBDFCB', stroke: '#2B201A', 'stroke-width': 0.8, opacity: 0.85 }, art);
+      el('path', { d: path(1),    fill: '#E3D4BB', stroke: '#2B201A', 'stroke-width': 1.4, 'stroke-linejoin': 'round' }, art);
+    });
+
+    // ---- border: thin neatline with evenly spaced ticks, perfectly straight ----
+    const frame = el('g', { opacity: 0.22, 'shape-rendering': 'crispEdges' });
+    const gridG = el('g', { 'clip-path': 'url(#neat)', stroke: '#D9C9B6', 'stroke-width': '1' }, frame);
+    for (let x = 160.5; x < W; x += 160) el('line', { x1: x, y1: 0, x2: x, y2: H }, gridG);
+    for (let y = 160.5; y < H; y += 160) el('line', { x1: 0, y1: y, x2: W, y2: y }, gridG);
+    const ox = 14, ix = 24, top = 6;
+    const L0 = ox + .5, T0 = ox + top + .5, R0_ = W - ox - .5, B0 = H - ox - .5;
+    const L1 = ix + .5, T1 = ix + top + .5, R1 = W - ix - .5, B1 = H - ix - .5;
+    const lines = el('g', { fill: 'none', stroke: '#2B201A', 'stroke-width': 1 }, frame);
+    el('rect', { x: L0, y: T0, width: R0_ - L0, height: B0 - T0 }, lines);
+    el('rect', { x: L1, y: T1, width: R1 - L1, height: B1 - T1 }, lines);
+    // ticks: even spacing that lands exactly on both corners
+    const nx_ = Math.max(8, Math.round((R1 - L1) / 20)), sx = (R1 - L1) / nx_;
+    const ny_ = Math.max(6, Math.round((B1 - T1) / 20)), sy = (B1 - T1) / ny_;
+    for (let k = 1; k < nx_; k++) {
+      const x = Math.round(L1 + k * sx) + .5;
+      el('line', { x1: x, y1: T0, x2: x, y2: T1 }, lines);
+      el('line', { x1: x, y1: B1, x2: x, y2: B0 }, lines);
+    }
+    for (let k = 1; k < ny_; k++) {
+      const y = Math.round(T1 + k * sy) + .5;
+      el('line', { x1: L0, y1: y, x2: L1, y2: y }, lines);
+      el('line', { x1: R1, y1: y, x2: R0_, y2: y }, lines);
+    }
+
+    // ---- the course, in its own space ----
+    const wide = rw >= rh;
+    const S = wide ? { x: Rg.x0 + rw * 0.1, y: Rg.y0 + rh * 0.72 } : { x: Rg.x0 + rw * 0.3, y: Rg.y0 + rh * 0.1 };
+    const D = wide ? { x: Rg.x0 + rw * 0.9, y: Rg.y0 + rh * 0.28 } : { x: Rg.x0 + rw * 0.72, y: Rg.y0 + rh * 0.9 };
+    const dx = D.x - S.x, dy = D.y - S.y, len = Math.hypot(dx, dy);
+    const ux = dx / len, uy = dy / len;
+    const E = { x: D.x - ux * 16, y: D.y - uy * 16 };
+    const along = 0.55;
+    const inside = (p) => p.x > Rg.x0 + 14 && p.x < Rg.x1 - 14 && p.y > Rg.y0 + 14 && p.y < Rg.y1 - 14;
+    let pick = null;
+    for (let off = 0.26 * len; off > 18 && !pick; off *= 0.88) for (const sg of [1, -1]) {
+      const nx = -uy * sg, ny = ux * sg;
+      const F = { x: S.x + ux * len * along + nx * off, y: S.y + uy * len * along + ny * off };
+      const c2 = { x: S.x + ux * len * along * 0.92 + nx * off * 0.5, y: S.y + uy * len * along * 0.92 + ny * off * 0.5 };
+      if (inside(F) && inside(c2)) { pick = { off, nx, ny, F, c2 }; break; }
+    }
+    if (!pick) { const nx = -uy, ny = ux, off = 24;
+      pick = { off, nx, ny, F: { x: S.x + ux*len*along + nx*off, y: S.y + uy*len*along + ny*off },
+               c2: { x: S.x + ux*len*along*0.92 + nx*off*0.5, y: S.y + uy*len*along*0.92 + ny*off*0.5 } }; }
+    const { off, nx, ny, F, c2 } = pick;
+    const c1 = { x: S.x + ux * len * along * 0.55 + nx * off * 0.05, y: S.y + uy * len * along * 0.55 + ny * off * 0.05 };
+
+    const g = el('g', { filter: 'url(#rough)', opacity: '0.5' });
+    el('line', { class: 'ink', x1: S.x, y1: S.y, x2: E.x, y2: E.y, 'stroke-width': '1.3', 'stroke-dasharray': '7 6', opacity: '0.5' }, g);
+    el('circle', { class: 'ink', cx: S.x, cy: S.y, r: 5, 'stroke-width': '1.4', opacity: '0.5' }, g);
+    el('circle', { cx: S.x, cy: S.y, r: 1.6, fill: '#2B201A', opacity: '0.5' }, g);
+    el('path', { class: 'ink', 'stroke-width': '1.6', opacity: '0.5', d: `M ${P(S.x, S.y)} C ${P(c1.x, c1.y)}, ${P(c2.x, c2.y)}, ${P(F.x, F.y)}` }, g);
+    const bez = (t) => { const mm = 1 - t; return {
+      x: mm**3*S.x + 3*mm*mm*t*c1.x + 3*mm*t*t*c2.x + t**3*F.x,
+      y: mm**3*S.y + 3*mm*mm*t*c1.y + 3*mm*t*t*c2.y + t**3*F.y }; };
+    [0.3, 0.62].forEach(t => { const p = bez(t);
+      el('line', { class: 'ink', x1: p.x - nx*5, y1: p.y - ny*5, x2: p.x + nx*5, y2: p.y + ny*5, 'stroke-width': '1.4', opacity: '0.5' }, g); });
+    el('circle', { class: 'cog', cx: F.x, cy: F.y, r: 8.5, 'stroke-width': '2' }, g);
+    el('circle', { cx: F.x, cy: F.y, r: 2.6, fill: '#9A4B2E' }, g);
+    { const vx = E.x - F.x, vy = E.y - F.y, vl = Math.hypot(vx, vy), ax = vx / vl, ay = vy / vl, bx = -ay, by = ax;
+      el('line', { class: 'cog', x1: F.x, y1: F.y, x2: E.x - ax * 8, y2: E.y - ay * 8, 'stroke-width': '2.2' }, g);
+      el('path', { d: `M ${P(E.x + ax * 3, E.y + ay * 3)} L ${P(E.x - ax * 11 + bx * 6, E.y - ay * 11 + by * 6)} L ${P(E.x - ax * 11 - bx * 6, E.y - ay * 11 - by * 6)} Z`, fill: '#9A4B2E' }, g); }
+    el('circle', { class: 'cog', cx: D.x, cy: D.y, r: 14, 'stroke-width': '1.2', 'stroke-dasharray': '2 4' }, g);
+    el('circle', { cx: D.x, cy: D.y, r: 3, fill: '#9A4B2E' }, g);
+
+    // ---- labels ----
+    const segDist = (px, py, a, b) => { const ddx = b.x - a.x, ddy = b.y - a.y; let t = ((px - a.x)*ddx + (py - a.y)*ddy) / (ddx*ddx + ddy*ddy);
+      t = Math.max(0, Math.min(1, t)); return Math.hypot(px - (a.x + t*ddx), py - (a.y + t*ddy)); };
+    const lb = el('g', { opacity: 0.75 });
+    const label = (text, x, y, ang, cls) => {
+      if (ang > 90) ang -= 180; if (ang < -90) ang += 180;
+      const t = el('text', { x, y, 'text-anchor': 'middle', class: cls || '', transform: `rotate(${ang.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)})` }, lb);
+      t.textContent = text;
+    };
+    const ang = (ax, ay) => Math.atan2(ay, ax) * 180 / Math.PI;
+    // course: beside the dashed line, on the side away from the drift
+    const mid = { x: (S.x + E.x) / 2, y: (S.y + E.y) / 2 };
+    // correction: beside the cognac line, on the side away from the plan
+    const cvx = E.x - F.x, cvy = E.y - F.y, cl = Math.hypot(cvx, cvy), px = -cvy / cl, py = cvx / cl;
+    const cm = { x: (F.x + E.x) / 2, y: (F.y + E.y) / 2 };
+    const sgn = segDist(cm.x + px * 15, cm.y + py * 15, S, E) >= segDist(cm.x - px * 15, cm.y - py * 15, S, E) ? 1 : -1;
+    label('CORRECTION', cm.x + px * 15 * sgn, cm.y + py * 15 * sgn, ang(cvx, cvy), 'cog-t');
+
+    // ---- a few soundings for texture (kept clear of the content and the course) ----
+    const snd = el('g', { opacity: 1 }, chart);
+    const guard = [[S, E], [S, F], [F, E]];
+    for (let t = 0.1; t < 1; t += 0.15) guard.push([bez(t), bez(Math.min(1, t + 0.1))]);
+    const cell = 150; let placed = 0;
+    for (let gx = 50; gx < W - 50 && placed < 14; gx += cell) for (let gy = 56; gy < H - 56 && placed < 14; gy += cell) {
+      if (rand() < 0.35) continue;
+      const x = gx + rand() * (cell - 40), y = gy + rand() * (cell - 40);
+      if (x > box.x0 - 14 && x < box.x1 + 14 && y > box.y0 - 14 && y < box.y1 + 14) continue;
+      if (guard.some(([a, b]) => segDist(x, y, a, b) < 42) || Math.hypot(x - D.x, y - D.y) < 46) continue;
+      if (x < 46 || x > W - 46 || y < 52 || y > H - 46) continue;
+      const rho = Math.min(...paths.map(p => p.rho(x, y)));
+      if (rho < 1.25) continue;
+      const depth = Math.max(2, Math.round((rho - 1) * 13 + rand() * 4));
+      const t = el('text', { x, y }, snd); t.textContent = depth; placed++;
+      if (rand() < 0.4 && depth < 30) { const sub = el('tspan', { dy: 3, 'font-size': 7 }, t); sub.textContent = Math.floor(rand() * 9); }
+    }
+  }
+
+  const go = () => requestAnimationFrame(build);
+  if (logo.complete) go(); else logo.addEventListener('load', go);
+  let t; window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(build, 150); });
+})();
+</script>
+</body>
+</html>
