@@ -151,6 +151,7 @@
     }
 
     // ---- the course, in its own space ----
+    const SHOW_COURSE = false; // set to true to bring the course + correction back
     const wide = rw >= rh;
     const S = wide ? { x: Rg.x0 + rw * 0.1, y: Rg.y0 + rh * 0.72 } : { x: Rg.x0 + rw * 0.3, y: Rg.y0 + rh * 0.1 };
     const D = wide ? { x: Rg.x0 + rw * 0.9, y: Rg.y0 + rh * 0.28 } : { x: Rg.x0 + rw * 0.72, y: Rg.y0 + rh * 0.9 };
@@ -172,7 +173,7 @@
     const { off, nx, ny, F, c2 } = pick;
     const c1 = { x: S.x + ux * len * along * 0.55 + nx * off * 0.05, y: S.y + uy * len * along * 0.55 + ny * off * 0.05 };
 
-    const g = el('g', { filter: 'url(#rough)', opacity: '0.5' });
+    const g = el('g', { filter: 'url(#rough)', opacity: '0.5', display: SHOW_COURSE ? 'inline' : 'none' });
     el('line', { class: 'ink', x1: S.x, y1: S.y, x2: E.x, y2: E.y, 'stroke-width': '1.3', 'stroke-dasharray': '7 6', opacity: '0.5' }, g);
     el('circle', { class: 'ink', cx: S.x, cy: S.y, r: 5, 'stroke-width': '1.4', opacity: '0.5' }, g);
     el('circle', { cx: S.x, cy: S.y, r: 1.6, fill: '#2B201A', opacity: '0.5' }, g);
@@ -193,7 +194,7 @@
     // ---- labels ----
     const segDist = (px, py, a, b) => { const ddx = b.x - a.x, ddy = b.y - a.y; let t = ((px - a.x)*ddx + (py - a.y)*ddy) / (ddx*ddx + ddy*ddy);
       t = Math.max(0, Math.min(1, t)); return Math.hypot(px - (a.x + t*ddx), py - (a.y + t*ddy)); };
-    const lb = el('g', { opacity: 0.75 });
+    const lb = el('g', { opacity: 0.75, display: SHOW_COURSE ? 'inline' : 'none' });
     const label = (text, x, y, ang, cls) => {
       if (ang > 90) ang -= 180; if (ang < -90) ang += 180;
       const t = el('text', { x, y, 'text-anchor': 'middle', class: cls || '', transform: `rotate(${ang.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)})` }, lb);
