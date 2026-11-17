@@ -151,7 +151,7 @@
     }
 
     // ---- the course, in its own space ----
-    const SHOW_COURSE = false; // set to true to bring the course + correction back
+    const SHOW_COURSE = true; // set to true to bring the course + correction back
     const wide = rw >= rh;
     const S = wide ? { x: Rg.x0 + rw * 0.1, y: Rg.y0 + rh * 0.72 } : { x: Rg.x0 + rw * 0.3, y: Rg.y0 + rh * 0.1 };
     const D = wide ? { x: Rg.x0 + rw * 0.9, y: Rg.y0 + rh * 0.28 } : { x: Rg.x0 + rw * 0.72, y: Rg.y0 + rh * 0.9 };
@@ -207,7 +207,7 @@
     const cvx = E.x - F.x, cvy = E.y - F.y, cl = Math.hypot(cvx, cvy), px = -cvy / cl, py = cvx / cl;
     const cm = { x: (F.x + E.x) / 2, y: (F.y + E.y) / 2 };
     const sgn = segDist(cm.x + px * 15, cm.y + py * 15, S, E) >= segDist(cm.x - px * 15, cm.y - py * 15, S, E) ? 1 : -1;
-    label('CORRECTION', cm.x + px * 15 * sgn, cm.y + py * 15 * sgn, ang(cvx, cvy), 'cog-t');
+    label('COURSE CORRECTION', cm.x + px * 15 * sgn, cm.y + py * 15 * sgn, ang(cvx, cvy), 'cog-t');
 
     // ---- a few soundings for texture (kept clear of the content and the course) ----
     const snd = el('g', { opacity: 1 }, chart);
