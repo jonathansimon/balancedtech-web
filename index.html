@@ -45,11 +45,15 @@
   .btn { display:inline-block; background:#9A4B2E; color:#F5EEE4; font-weight:700; letter-spacing:.1em; text-transform:uppercase; text-decoration:none; border:1.5px solid #9A4B2E; }
   main a.btn { padding:13px 26px; font-size:16px; }
   .btn:hover, .btn:focus-visible { background:#2B201A; border-color:#2B201A; outline:none; }
+  @media (max-width:700px) {
+    .sitehdr { top:52px !important; padding:0 30px !important; justify-content:center !important; }
+    .sitehdr nav { gap:10px 20px !important; }
+  }
 </style>
 </head>
 <body>
   <svg id="chart" aria-hidden="true"></svg>
-  <header style="position:absolute;top:44px;left:0;right:0;display:flex;flex-wrap:wrap;justify-content:flex-end;padding:0 64px;z-index:2"><nav style="display:flex;flex-wrap:wrap;gap:12px 30px;align-items:center;font-size:14px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-family:'Courier New',Courier,monospace"><a href="/" style="color:#9A4B2E;border-bottom:2px solid #9A4B2E;text-decoration:none;padding-bottom:3px">Home</a><a href="/about/" style="color:#2B201A;border-bottom:2px solid transparent;text-decoration:none;padding-bottom:3px">About</a><a class="btn" href="/book/" style="padding:10px 18px;font-size:13px">Let's talk</a></nav></header>
+  <header class="sitehdr" style="position:absolute;top:44px;left:0;right:0;display:flex;flex-wrap:wrap;justify-content:flex-end;padding:0 64px;z-index:2"><nav style="display:flex;flex-wrap:wrap;gap:12px 30px;align-items:center;font-size:14px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-family:'Courier New',Courier,monospace"><a href="/" style="color:#9A4B2E;border-bottom:2px solid #9A4B2E;text-decoration:none;padding-bottom:3px">Home</a><a href="/about/" style="color:#2B201A;border-bottom:2px solid transparent;text-decoration:none;padding-bottom:3px">About</a><a class="btn" href="/book/" style="padding:10px 18px;font-size:13px">Let's talk</a></nav></header>
   <main>
     <img id="logo" src="/img/logo.png" alt="Balanced Technology compass logo" width="220" height="220">
     <h1>Balanced Technology</h1>
@@ -105,7 +109,7 @@
     const regions = {
       left:   { x0: 40,         y0: 50,         x1: box.x0 - 18, y1: H - 40 },
       right:  { x0: box.x1 + 18, y0: 50,         x1: W - 40,      y1: H - 40 },
-      top:    { x0: 40,         y0: 46,         x1: W - 40,      y1: box.y0 - 10 },
+      top:    { x0: 40,         y0: Math.max(46, (document.querySelector('header') ? document.querySelector('header').getBoundingClientRect().bottom + 12 : 46)),         x1: W - 40,      y1: box.y0 - 10 },
       bottom: { x0: 40,         y0: box.y1 + 10, x1: W - 40,      y1: H - 40 },
     };
     let side = null, best = 0;
