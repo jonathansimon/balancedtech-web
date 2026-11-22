@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Balanced Technology</title>
 <meta name="description" content="Balanced Technology">
-<link rel="icon" href="logo.png">
+<link rel="icon" href="/img/logo.png">
 <style>
   :root { --espresso:#2B201A; --cognac:#9A4B2E; --cream:#F5EEE4; --rule:#D9C9B6; --muted:#7A6859; }
   * { box-sizing: border-box; margin: 0; }
@@ -37,15 +37,25 @@
   #chart text   { font: italic 700 10px "Courier New", Courier, monospace; fill: var(--muted); letter-spacing: .08em; }
   #chart text.cog-t { fill: var(--cognac); font-style: normal; font-size: 10.5px; }
 
+  .tag { font-size: clamp(1rem, 1.9vw, 1.25rem); line-height: 1.5; margin: 0 auto 1.5rem; max-width: 30rem; }
+  /* nav is pinned inside the page border, above the chart */
+  header nav a { font-size: 14px; letter-spacing: .12em; font-weight: 700; }
+  header nav a.btn { font-size: 13px; padding: 10px 18px; border-bottom: 1.5px solid #9A4B2E; }
+  header nav a.btn:hover { border-color: #2B201A; }
+  .btn { display:inline-block; background:#9A4B2E; color:#F5EEE4; font-weight:700; letter-spacing:.1em; text-transform:uppercase; text-decoration:none; border:1.5px solid #9A4B2E; }
+  main a.btn { padding:13px 26px; font-size:16px; }
+  .btn:hover, .btn:focus-visible { background:#2B201A; border-color:#2B201A; outline:none; }
 </style>
 </head>
 <body>
   <svg id="chart" aria-hidden="true"></svg>
+  <header style="position:absolute;top:44px;left:0;right:0;display:flex;flex-wrap:wrap;justify-content:flex-end;padding:0 64px;z-index:2"><nav style="display:flex;flex-wrap:wrap;gap:12px 30px;align-items:center;font-size:14px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-family:'Courier New',Courier,monospace"><a href="/" style="color:#9A4B2E;border-bottom:2px solid #9A4B2E;text-decoration:none;padding-bottom:3px">Home</a><a href="/about/" style="color:#2B201A;border-bottom:2px solid transparent;text-decoration:none;padding-bottom:3px">About</a><a class="btn" href="/book/" style="padding:10px 18px;font-size:13px">Let's talk</a></nav></header>
   <main>
-    <img id="logo" src="logo.png" alt="Balanced Technology compass logo" width="220" height="220">
+    <img id="logo" src="/img/logo.png" alt="Balanced Technology compass logo" width="220" height="220">
     <h1>Balanced Technology</h1>
     <hr class="rule">
-    <a href="mailto:jonathan@balancedtech.co">jonathan@balancedtech.co</a>
+    <p class="tag">Technology advisor for CEOs and leadership teams.</p>
+    <a class="btn" href="/book/">Let's talk</a>
   </main>
 
 <script>

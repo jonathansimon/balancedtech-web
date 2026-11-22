@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
 <meta name="googlebot" content="noindex, nofollow">
-<title>Balanced Technology | Introducing</title>
+<title>Balanced Technology | Course Correction</title>
 <link rel="icon" href="img/logo.png">
 <style>
   :root { --espresso:#2B201A; --body:#4D423B; --muted:#7A6859; --cognac:#9A4B2E; --cream:#F5EEE4; --card:#FBF7F0; --rule:#D9C9B6; }
@@ -15,9 +15,6 @@
   .wrap { max-width:1040px; margin:0 auto; padding:0 48px; position:relative; z-index:1; }
   #bg { position:absolute; left:0; top:0; width:100%; height:100%; z-index:0; pointer-events:none; }
 
-  header a { display:inline-flex; align-items:center; gap:18px; padding:40px 0 4px; color:var(--espresso); text-decoration:none; }
-  header img { width:60px; height:60px; }
-  header span { font-size:clamp(1.3rem,3.4vw,2rem); letter-spacing:.14em; text-transform:uppercase; }
 
   h1 { color:var(--espresso); font-size:clamp(2rem,5vw,3.1rem); line-height:1.12; letter-spacing:-.01em; }
   .hero { padding:44px 0 8px; display:grid; grid-template-columns:1.1fr 1fr; gap:48px; align-items:start; }
@@ -60,11 +57,40 @@
     .hero { gap:32px; padding-top:28px; }
     .wrap { padding:0 42px; }
   }
+  .btn{display:inline-block;background:#9A4B2E;color:#F5EEE4;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border:1.5px solid #9A4B2E}
+  .btn:hover{background:#2B201A;border-color:#2B201A}
+  body > a, body > header { line-height:normal }
+  main.wrap{padding-top:96px}
+  .logos, .cta { width:calc(100vw - 128px); max-width:none; margin-left:calc(50% - 50vw + 64px); }
+  .hero { align-items:stretch; }
+  .cc-card { display:flex; flex-direction:column; }
+  .cc-wrap { position:relative; flex:1; min-height:0; }
+  .cc-fig { position:absolute; inset:0; width:100%; height:100%; display:block; }
+  @media (max-width:760px) { .cc-wrap { min-height:440px; } }
+  @media (prefers-reduced-motion: no-preference) {
+    .cc-fig .planmask { stroke-dasharray:1; animation:ccdraw 2.2s ease-in-out .5s both; }
+    .cc-fig .tgt { animation:ccfade .5s ease-out 2.4s both; }
+    .cc-fig .drift { stroke-dasharray:1; animation:ccdraw 1.8s ease-in-out 3s both; }
+    .cc-fig .t1 { animation:ccfade .3s ease-out 3.4s both; }
+    .cc-fig .t2 { animation:ccfade .3s ease-out 4.1s both; }
+    .cc-fig .fix { animation:ccfade .4s ease-out 4.7s both; }
+    .cc-fig .corr { stroke-dasharray:1; animation:ccdraw 1s ease-in-out 5.3s both; }
+    .cc-fig .l1 { animation:ccfade .6s ease-out 2.7s both; }
+    .cc-fig .l2 { animation:ccfade .6s ease-out 4.8s both; }
+    .cc-fig .arrow { animation:ccfade .3s ease-out 6.2s both; }
+    .cc-fig .l3 { animation:ccfade .7s ease-out 6.4s both; }
+  }
+  @keyframes ccdraw { from { stroke-dashoffset:1; } to { stroke-dashoffset:0; } }
+  @keyframes ccfade { from { opacity:0; } }
 </style>
 </head>
 <body>
 <svg id="bg" aria-hidden="true"></svg>
-<header class="wrap"><a href="/"><img src="img/logo.png" alt=""><span class="mono">Balanced Technology</span></a></header>
+<a href="/" style="position:absolute;top:38px;left:64px;z-index:2;display:flex;align-items:center;gap:14px;text-decoration:none;color:#2B201A">
+<img src="/img/logo.png" alt="Balanced Technology compass logo" width="44" height="44" style="width:44px;height:44px;display:block">
+<span style="font-weight:700;font-size:26px;letter-spacing:.14em;text-transform:uppercase;font-family:'Courier New',Courier,monospace">Balanced Technology</span>
+</a>
+<header style="position:absolute;top:38px;left:0;right:0;display:flex;flex-wrap:wrap;justify-content:flex-end;padding:0 64px;z-index:2"><nav style="display:flex;flex-wrap:wrap;gap:12px 30px;align-items:center;font-size:14px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-family:'Courier New',Courier,monospace"><a href="/" style="color:#2B201A;border-bottom:2px solid transparent;text-decoration:none;padding-bottom:3px">Home</a><a href="/about/" style="color:#2B201A;border-bottom:2px solid transparent;text-decoration:none;padding-bottom:3px">About</a><a class="btn" href="/book/" style="padding:10px 18px;font-size:13px">Let's talk</a></nav></header>
 
 <main class="wrap">
   <section class="hero">
@@ -73,18 +99,28 @@
       <p class="lead">I help CEOs and leadership teams tackle tough technology challenges, whether that means getting a stalled project back on track, turning around a struggling team, or fixing cross functional systems and processes that aren't working. I help teams find savings and efficiencies and know whether each project is worth the investment. I quickly get to the root of the problem, work alongside your team to solve it, and make sure the improvements last.</p>
       <a class="dl mono" href="/content/Balanced-Technology-One-Pager.pdf" download>Download the one-pager (PDF)</a>
     </div>
-    <aside class="card">
-      <div class="section-title mono">&mdash; Background &mdash;</div>
-      <div class="person">
-        <img src="img/jonathan-sail5.png" alt="Jonathan Simon">
-        <p><b>Jonathan Simon.</b> Technology executive with 25 years experience and proven track record of building and turning around teams and projects.</p>
+    <aside class="card cc-card">
+      <div class="section-title mono">&mdash; Course Correction &mdash;</div>
+      <div class="cc-wrap">
+      <svg class="cc-fig" viewBox="0 0 400 540" preserveAspectRatio="xMidYMid meet" role="img" aria-label="The intended course, the actual course that drifted off it, and the course correction back to the destination">
+        <defs><mask id="ccPlanMask" maskUnits="userSpaceOnUse" x="0" y="0" width="400" height="540"><line class="planmask" x1="60" y1="470" x2="330.8" y2="83.1" stroke="#fff" stroke-width="10" pathLength="1"/></mask></defs>
+        <g fill="none" stroke-linecap="round">
+          <line class="plan" mask="url(#ccPlanMask)" x1="60" y1="470" x2="330.8" y2="83.1" stroke="#2B201A" stroke-width="1.3" stroke-dasharray="7 6" opacity=".5"/>
+          <circle cx="60" cy="470" r="5" stroke="#2B201A" stroke-width="1.4" opacity=".5"/>
+          <circle cx="60" cy="470" r="1.6" fill="#2B201A" stroke="none" opacity=".5"/>
+          <path class="drift" pathLength="1" d="M 60 470 C 150.7 349.9, 242.7 296.3, 295.9 307.3" stroke="#2B201A" stroke-width="1.6" opacity=".5"/>
+          <line class="tick t1" x1="136.9" y1="376.9" x2="145.1" y2="382.7" stroke="#2B201A" stroke-width="1.4" opacity=".5"/>
+          <line class="tick t2" x1="216.6" y1="319.9" x2="224.8" y2="325.7" stroke="#2B201A" stroke-width="1.4" opacity=".5"/>
+          <g class="fix"><circle cx="295.9" cy="307.3" r="8.5" stroke="#9A4B2E" stroke-width="2"/><circle cx="295.9" cy="307.3" r="2.6" fill="#9A4B2E" stroke="none"/></g>
+          <line class="corr" pathLength="1" x1="295.9" y1="307.3" x2="329.6" y2="91" stroke="#9A4B2E" stroke-width="2.2"/>
+          <path class="arrow" d="M 331.3 80.1 L 335 94.9 L 323.2 93.1 Z" fill="#9A4B2E" stroke="none"/>
+          <g class="tgt"><circle cx="340" cy="70" r="14" stroke="#9A4B2E" stroke-width="1.2" stroke-dasharray="2 4"/><circle cx="340" cy="70" r="3" fill="#9A4B2E" stroke="none"/></g>
+        </g>
+        <text class="lbl l1" x="182.3" y="267.4" text-anchor="middle" transform="rotate(-55 182.3 267.4)" font-family="'Courier New',Courier,monospace" font-weight="700" font-size="10.5" letter-spacing=".08em" fill="#7A6859" opacity=".95">INTENDED COURSE</text>
+        <text class="lbl l2" x="200.8" y="352.9" text-anchor="middle" transform="rotate(-33.4 200.8 352.9)" font-family="'Courier New',Courier,monospace" font-weight="700" font-size="10.5" letter-spacing=".08em" fill="#7A6859" opacity=".95">ACTUAL COURSE</text>
+        <text class="lbl l3" x="329.2" y="197.7" text-anchor="middle" transform="rotate(-81.1 329.2 197.7)" font-family="'Courier New',Courier,monospace" font-weight="700" font-size="10.5" letter-spacing=".08em" fill="#9A4B2E" opacity=".9">COURSE CORRECTION</text>
+      </svg>
       </div>
-      <ul>
-        <li>CPTO at Brave Health: Rebuilt tech stack, team, and cross functional processes, implemented AI automation to save $2M annualized.</li>
-        <li>CTO at Brightline: 400 enterprise client launches in 3 years, initial offering launched in 12 weeks, scaled team from 5 to 60 in 18 months, raised over $200M.</li>
-        <li>Engineering Manager at Meta: Rebuilt core mobile developer infrastructure.</li>
-        <li>CTO at AllTrails: Pre-revenue to cash-flow break-even.</li>
-      </ul>
     </aside>
   </section>
 
@@ -130,9 +166,8 @@
 </main>
 
 <footer class="wrap"><div class="cta">
-  <div class="big mono">Let's chat.</div>
-  <p>Call, text, or email me to talk through your technology challenges.</p>
-  <p class="contact mono"><a href="tel:+17327188844">732.718.8844</a> &nbsp;|&nbsp; <a href="mailto:jonathan@balancedtech.co">jonathan@balancedtech.co</a></p>
+  <div class="big mono">Let's talk.</div>
+  <p class="contact mono"><a href="mailto:jonathan@balancedtech.co">jonathan@balancedtech.co</a></p>
 </div></footer>
 <script>
 (function () {
