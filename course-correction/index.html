@@ -20,6 +20,7 @@
   .hero { padding:44px 0 8px; display:grid; grid-template-columns:1.1fr 1fr; gap:48px; align-items:start; }
   .dl { display:inline-block; margin-top:22px; padding:11px 20px; font-size:1rem; letter-spacing:.06em; color:var(--cognac); text-decoration:none; border:1.5px solid var(--cognac); background:var(--card); }
   .dl:hover { background:var(--cognac); color:var(--card); }
+  .lead + .lead { margin-top:16px; }
   .lead { margin-top:22px; font-size:clamp(1.1rem,2vw,1.3rem); line-height:1.55; }
 
   .card, .case, .cta { background:var(--card); border:1px solid var(--rule); border-top:3px solid var(--cognac); }
@@ -64,7 +65,7 @@
   .logos, .cta { width:calc(100vw - 128px); max-width:none; margin-left:calc(50% - 50vw + 64px); }
   .hero { align-items:stretch; }
   .cc-card { display:flex; flex-direction:column; }
-  .cc-wrap { position:relative; flex:1; min-height:0; }
+  .cc-wrap { position:relative; flex:1; min-height:0; margin:-8px -12px -10px; }
   .cc-fig { position:absolute; inset:0; width:100%; height:100%; display:block; }
   @media (max-width:760px) { .cc-wrap { min-height:440px; } }
   @media (prefers-reduced-motion: no-preference) {
@@ -73,7 +74,8 @@
     .cc-fig .drift { stroke-dasharray:1; animation:ccdraw 1.8s ease-in-out 3s both; }
     .cc-fig .t1 { animation:ccfade .3s ease-out 3.4s both; }
     .cc-fig .t2 { animation:ccfade .3s ease-out 4.1s both; }
-    .cc-fig .fix { animation:ccfade .4s ease-out 4.7s both; }
+    .cc-fig .fix, .cc-fig .dim { animation:ccfade .4s ease-out 4.7s both; }
+    .cc-fig .l4 { animation:ccfade .6s ease-out 5s both; }
     .cc-fig .corr { stroke-dasharray:1; animation:ccdraw 1s ease-in-out 5.3s both; }
     .cc-fig .l1 { animation:ccfade .6s ease-out 2.7s both; }
     .cc-fig .l2 { animation:ccfade .6s ease-out 4.8s both; }
@@ -95,14 +97,15 @@
 <main class="wrap">
   <section class="hero">
     <div>
-      <h1>When technology becomes a business problem</h1>
-      <p class="lead">I help CEOs and leadership teams tackle tough technology challenges, whether that means getting a stalled project back on track, turning around a struggling team, or fixing cross functional systems and processes that aren't working. I help teams find savings and efficiencies and know whether each project is worth the investment. I quickly get to the root of the problem, work alongside your team to solve it, and make sure the improvements last.</p>
-      <a class="dl mono" href="/content/Balanced-Technology-One-Pager.pdf" download>Download the one-pager (PDF)</a>
+      <h1>When technology becomes a business problem, course correct.</h1>
+      <p class="lead">I help CEOs and leadership teams tackle tough technology challenges: getting a stalled project back on track, turning around a struggling team, or fixing cross-functional systems and processes that aren't working. I also help teams find savings and efficiencies, and know whether each project is worth the investment.</p>
+      <p class="lead">I get to the root of the problem quickly, work alongside your team to solve it, and make sure the improvements last. I explain it plainly to you and your team as we work through it all together.</p>
+      <a class="dl mono" href="/content/Balanced-Technology-Course-Correction.pdf" download>Download the one-pager (PDF)</a>
     </div>
     <aside class="card cc-card">
       <div class="section-title mono">&mdash; Course Correction &mdash;</div>
       <div class="cc-wrap">
-      <svg class="cc-fig" viewBox="0 0 400 540" preserveAspectRatio="xMidYMid meet" role="img" aria-label="The intended course, the actual course that drifted off it, and the course correction back to the destination">
+      <svg class="cc-fig" viewBox="45 50 310 435" preserveAspectRatio="xMidYMid meet" role="img" aria-label="The intended course, the actual course that drifted off it, and the course correction back to the destination">
         <defs><mask id="ccPlanMask" maskUnits="userSpaceOnUse" x="0" y="0" width="400" height="540"><line class="planmask" x1="60" y1="470" x2="330.8" y2="83.1" stroke="#fff" stroke-width="10" pathLength="1"/></mask></defs>
         <g fill="none" stroke-linecap="round">
           <line class="plan" mask="url(#ccPlanMask)" x1="60" y1="470" x2="330.8" y2="83.1" stroke="#2B201A" stroke-width="1.3" stroke-dasharray="7 6" opacity=".5"/>
@@ -111,14 +114,16 @@
           <path class="drift" pathLength="1" d="M 60 470 C 150.7 349.9, 242.7 296.3, 295.9 307.3" stroke="#2B201A" stroke-width="1.6" opacity=".5"/>
           <line class="tick t1" x1="136.9" y1="376.9" x2="145.1" y2="382.7" stroke="#2B201A" stroke-width="1.4" opacity=".5"/>
           <line class="tick t2" x1="216.6" y1="319.9" x2="224.8" y2="325.7" stroke="#2B201A" stroke-width="1.4" opacity=".5"/>
+          <g class="dim"><line x1="214" y1="250" x2="282" y2="297.5" stroke="#7A6859" stroke-width="1.6" opacity=".9"/><path d="M 288.5 302.1 L 278.5 300.6 L 283.7 293.2 Z" fill="#7A6859" stroke="none"/></g>
           <g class="fix"><circle cx="295.9" cy="307.3" r="8.5" stroke="#9A4B2E" stroke-width="2"/><circle cx="295.9" cy="307.3" r="2.6" fill="#9A4B2E" stroke="none"/></g>
           <line class="corr" pathLength="1" x1="295.9" y1="307.3" x2="329.6" y2="91" stroke="#9A4B2E" stroke-width="2.2"/>
           <path class="arrow" d="M 331.3 80.1 L 335 94.9 L 323.2 93.1 Z" fill="#9A4B2E" stroke="none"/>
           <g class="tgt"><circle cx="340" cy="70" r="14" stroke="#9A4B2E" stroke-width="1.2" stroke-dasharray="2 4"/><circle cx="340" cy="70" r="3" fill="#9A4B2E" stroke="none"/></g>
         </g>
-        <text class="lbl l1" x="182.3" y="267.4" text-anchor="middle" transform="rotate(-55 182.3 267.4)" font-family="'Courier New',Courier,monospace" font-weight="700" font-size="10.5" letter-spacing=".08em" fill="#7A6859" opacity=".95">INTENDED COURSE</text>
-        <text class="lbl l2" x="200.8" y="352.9" text-anchor="middle" transform="rotate(-33.4 200.8 352.9)" font-family="'Courier New',Courier,monospace" font-weight="700" font-size="10.5" letter-spacing=".08em" fill="#7A6859" opacity=".95">ACTUAL COURSE</text>
-        <text class="lbl l3" x="329.2" y="197.7" text-anchor="middle" transform="rotate(-81.1 329.2 197.7)" font-family="'Courier New',Courier,monospace" font-weight="700" font-size="10.5" letter-spacing=".08em" fill="#9A4B2E" opacity=".9">COURSE CORRECTION</text>
+        <text class="lbl l1" x="182.3" y="267.4" text-anchor="middle" transform="rotate(-55 182.3 267.4)" font-family="'Courier New',Courier,monospace" font-weight="700" font-size="11.5" letter-spacing=".08em" fill="#7A6859" opacity=".95">INTENDED COURSE</text>
+        <text class="lbl l2" x="200.8" y="352.9" text-anchor="middle" transform="rotate(-33.4 200.8 352.9)" font-family="'Courier New',Courier,monospace" font-weight="700" font-size="11.5" letter-spacing=".08em" fill="#7A6859" opacity=".95">ACTUAL COURSE</text>
+        <text class="lbl l4" x="258" y="268" text-anchor="middle" transform="rotate(35 258 268)" font-family="'Courier New',Courier,monospace" font-weight="700" font-size="11.5" letter-spacing=".08em" fill="#7A6859" opacity=".9">DRIFT</text>
+        <text class="lbl l3" x="329.2" y="197.7" text-anchor="middle" transform="rotate(-81.1 329.2 197.7)" font-family="'Courier New',Courier,monospace" font-weight="700" font-size="11.5" letter-spacing=".08em" fill="#9A4B2E" opacity=".9">COURSE CORRECTION</text>
       </svg>
       </div>
     </aside>
