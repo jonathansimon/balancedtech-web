@@ -1,3 +1,5 @@
 /introducing /course-correction/ 302
 /introducing/ /course-correction/ 302
 /introducing/* /course-correction/:splat 302
+/book /lets-talk/ 301
+/book/ /lets-talk/ 301
