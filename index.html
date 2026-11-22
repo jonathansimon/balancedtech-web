@@ -22,7 +22,7 @@
   }
   #chart { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
   main { position: relative; z-index: 1; text-align: center; padding: 2rem 1.5rem; }
-  img { width: clamp(150px, 22vw, 220px); height: auto; display: block; margin: 0 auto 2.25rem; }
+  img { width: clamp(130px, min(22vw, 23vh), 220px); height: auto; display: block; margin: 0 auto 2.25rem; }
   h1 { font-size: clamp(1.9rem, 4.6vw, 3rem); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
   .rule { margin: 1.5rem auto 1.25rem; width: 3.5rem; border: 0; border-top: 1px solid var(--rule); }
   a {
@@ -49,6 +49,12 @@
     .sitehdr { top:52px !important; padding:0 30px !important; justify-content:center !important; }
     .sitehdr nav { gap:10px 20px !important; }
   }
+
+  /* abstract gauge: needle oscillates while steadily climbing (animated in script below) */
+  .gauge { opacity:.4; position:fixed; left:clamp(48px,8vw,130px); top:50%; transform:translateY(-50%); z-index:1; display:block; width:clamp(130px,13vw,180px); height:auto; overflow:visible; }
+  @media (max-width:1199px) { .gauge { position:static; transform:none; width:clamp(110px,14vw,125px); margin:1.75rem auto 0; } }
+  .gauge .needle { transform-box:view-box; transform-origin:50% 50%; transform:rotate(95deg); }
+  .gauge .fill { stroke-dasharray:1; stroke-dashoffset:.15; }
 </style>
 </head>
 <body>
@@ -60,6 +66,7 @@
     <hr class="rule">
     <p class="tag">Technology advisor for CEOs and leadership teams.</p>
     <a class="btn" href="/lets-talk/">Let's talk</a>
+    <svg class="gauge" viewBox="0 0 200 200" aria-hidden="true"><path d="M 46.3 153.7 A 76 76 0 1 1 153.7 153.7" fill="none" stroke="#2B201A" stroke-width="5" stroke-linecap="round" opacity=".12"/><path class="fill" pathLength="1" d="M 46.3 153.7 A 76 76 0 1 1 153.7 153.7" fill="none" stroke="#9A4B2E" stroke-width="5" stroke-linecap="round" opacity=".85"/><line x1="39.2" y1="160.8" x2="34.9" y2="165.1" stroke="#2B201A" stroke-width="1.6" stroke-linecap="round" opacity=".4"/><line x1="25.5" y1="143.0" x2="22.9" y2="144.5" stroke="#2B201A" stroke-width="1" stroke-linecap="round" opacity=".4"/><line x1="16.9" y1="122.3" x2="14.0" y2="123.0" stroke="#2B201A" stroke-width="1" stroke-linecap="round" opacity=".4"/><line x1="14.0" y1="100.0" x2="8.0" y2="100.0" stroke="#2B201A" stroke-width="1.6" stroke-linecap="round" opacity=".4"/><line x1="16.9" y1="77.7" x2="14.0" y2="77.0" stroke="#2B201A" stroke-width="1" stroke-linecap="round" opacity=".4"/><line x1="25.5" y1="57.0" x2="22.9" y2="55.5" stroke="#2B201A" stroke-width="1" stroke-linecap="round" opacity=".4"/><line x1="39.2" y1="39.2" x2="34.9" y2="34.9" stroke="#2B201A" stroke-width="1.6" stroke-linecap="round" opacity=".4"/><line x1="57.0" y1="25.5" x2="55.5" y2="22.9" stroke="#2B201A" stroke-width="1" stroke-linecap="round" opacity=".4"/><line x1="77.7" y1="16.9" x2="77.0" y2="14.0" stroke="#2B201A" stroke-width="1" stroke-linecap="round" opacity=".4"/><line x1="100.0" y1="14.0" x2="100.0" y2="8.0" stroke="#2B201A" stroke-width="1.6" stroke-linecap="round" opacity=".4"/><line x1="122.3" y1="16.9" x2="123.0" y2="14.0" stroke="#2B201A" stroke-width="1" stroke-linecap="round" opacity=".4"/><line x1="143.0" y1="25.5" x2="144.5" y2="22.9" stroke="#2B201A" stroke-width="1" stroke-linecap="round" opacity=".4"/><line x1="160.8" y1="39.2" x2="165.1" y2="34.9" stroke="#2B201A" stroke-width="1.6" stroke-linecap="round" opacity=".4"/><line x1="174.5" y1="57.0" x2="177.1" y2="55.5" stroke="#2B201A" stroke-width="1" stroke-linecap="round" opacity=".4"/><line x1="183.1" y1="77.7" x2="186.0" y2="77.0" stroke="#2B201A" stroke-width="1" stroke-linecap="round" opacity=".4"/><line x1="186.0" y1="100.0" x2="192.0" y2="100.0" stroke="#2B201A" stroke-width="1.6" stroke-linecap="round" opacity=".4"/><line x1="183.1" y1="122.3" x2="186.0" y2="123.0" stroke="#2B201A" stroke-width="1" stroke-linecap="round" opacity=".4"/><line x1="174.5" y1="143.0" x2="177.1" y2="144.5" stroke="#2B201A" stroke-width="1" stroke-linecap="round" opacity=".4"/><line x1="160.8" y1="160.8" x2="165.1" y2="165.1" stroke="#2B201A" stroke-width="1.6" stroke-linecap="round" opacity=".4"/><g class="needle"><line x1="100" y1="108" x2="100" y2="42" stroke="#2B201A" stroke-width="2" stroke-linecap="round" opacity=".8"/><circle cx="100" cy="100" r="6" fill="#F5EEE4" stroke="#9A4B2E" stroke-width="2.2"/><circle cx="100" cy="100" r="2" fill="#9A4B2E"/></g></svg>
   </main>
 
 <script>
@@ -106,6 +113,8 @@
     // where the content sits, and where the course can go (away from it)
     const mr = main.getBoundingClientRect(), pad = 26;
     const box = { x0: mr.left - pad, y0: mr.top - pad, x1: mr.right + pad, y1: mr.bottom + pad };
+    const gg = document.querySelector('.gauge');
+    if (gg && getComputedStyle(gg).position === 'fixed') box.x0 = Math.min(box.x0, gg.getBoundingClientRect().left - pad);
     const regions = {
       left:   { x0: 40,         y0: 50,         x1: box.x0 - 18, y1: H - 40 },
       right:  { x0: box.x1 + 18, y0: 50,         x1: W - 40,      y1: H - 40 },
@@ -270,6 +279,23 @@
   const go = () => requestAnimationFrame(build);
   if (logo.complete) go(); else logo.addEventListener('load', go);
   let t; window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(build, 150); });
+})();
+</script>
+<script>
+// gauge: needle wobbles but trends steadily upward, then holds near the top
+(function () {
+  const needle = document.querySelector('.gauge .needle'), fill = document.querySelector('.gauge .fill');
+  if (!needle || !fill || !needle.animate) return;
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const N = 120, nk = [], fk = [];
+  for (let i = 0; i <= N; i++) {
+    const t = i / N;
+    const v = Math.max(0.03, Math.min(0.97, 0.1 + 0.75 * t + 0.09 * (1 - 0.85 * t) * Math.sin(2 * Math.PI * 5 * t)));
+    nk.push({ transform: 'rotate(' + (-135 + 270 * v).toFixed(2) + 'deg)', offset: t });
+    fk.push({ strokeDashoffset: (1 - v).toFixed(4), offset: t });
+  }
+  const opt = { duration: 7000, delay: 600, easing: 'linear', fill: 'both' };
+  needle.animate(nk, opt); fill.animate(fk, opt);
 })();
 </script>
 </body>
